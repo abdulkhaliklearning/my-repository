@@ -1,10 +1,9 @@
 package com.telus.repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.telus.model.Employee;
@@ -12,23 +11,84 @@ import com.telus.model.Employee;
 @Repository
 public class EmpRepository {
 
-    private final Map<Long, Employee> employee = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
 
-    public List<Employee> findAll() {
-        return new ArrayList<>(employee.values());
+    public EmpRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Employee findById(Long id) {
-        return employee.get(id);
+    public Employee InsertEmpRecord(Employee employee) {
+
+        String sql = "INSERT INTO employee (Emp_Name, Email, Project, Designation) VALUES (?, ?, ?, ?)";
+
+        jdbcTemplate.update(
+                sql,
+                employee.getEmp_name(),
+                employee.getEmail(),
+                employee.getProject(),
+                employee.getDesignation());
+
+        Long id = jdbcTemplate.queryForObject(
+                "SELECT LAST_INSERT_ID()",
+                Long.class);
+
+        employee.setId(id);
+
+        return employee;
     }
 
-    public Employee save(Employee emp) {
-        employee.put(emp.getId(), emp);
-        return emp;
+    // READ ALL
+    public List<Employee> getAllEmpRecords() {
+
+        String sql = "SELECT Emp_Id, Emp_Name, email, project, designation FROM employee ORDER BY Emp_Id";
+
+        return jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> new Employee(
+                        rs.getLong("Emp_Id"),
+                        rs.getString("Emp_Name"),
+                        rs.getString("email"),
+                        rs.getString("project"),
+                        rs.getString("designation")));
     }
 
-    public void deleteById(Long id) {
-        employee.remove(id);
+    // READ BY ID
+    public Optional<Employee> getEmpById(Long id) {
+
+        String sql = "SELECT Emp_Id, Emp_Name, email, project, designation FROM employee  WHERE Emp_Id = ?";
+
+        List<Employee> employees = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> new Employee(
+                        rs.getLong("Emp_Id"),
+                        rs.getString("Emp_Name"),
+                        rs.getString("email"),
+                        rs.getString("project"),
+                        rs.getString("designation")),
+                id);
+
+        return employees.stream().findFirst();
+    }
+
+    public int updateEmpRecord(Long id, Employee employee) {
+
+        String sql = "UPDATE employee SET Emp_Name = ?, email = ?, project = ?,  designation = ?  WHERE Emp_Id = ? ";
+
+        return jdbcTemplate.update(
+                sql,
+                employee.getEmp_name(),
+                employee.getEmail(),
+                employee.getProject(),
+                employee.getDesignation(),
+                id);
+    }
+
+    // DELETE
+    public int deleteEmpRecord(Long id) {
+
+        String sql = "DELETE FROM employee WHERE Emp_Id = ?";
+
+        return jdbcTemplate.update(sql, id);
     }
 
 }

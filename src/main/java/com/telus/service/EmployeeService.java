@@ -1,64 +1,17 @@
 package com.telus.service;
 
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.telus.model.Employee;
-import com.telus.repository.EmpRepository;
 
-@Service
-public class EmployeeService {
+public interface EmployeeService {
 
-    private final EmpRepository repository;
+    Employee InsertEmpRecord(Employee employee);
 
-    public EmployeeService(EmpRepository repository) {
-        this.repository = repository;
-    }
+    List<Employee> getAllEmpRecords();
 
-    public List<Employee> getAllProducts() {
-        return repository.findAll();
-    }
+    Employee getEmpById(Long id);
 
-    public Employee getEmpById(Long id) {
+    Employee updateEmpRecord(Long id, Employee employee);
 
-        Employee emp = repository.findById(id);
-
-        if (emp == null) {
-            throw new RuntimeException("Employee not found with id: " + id);
-        }
-
-        return emp;
-    }
-
-    public Employee createEmployee(Employee emp) {
-
-        return repository.save(emp);
-    }
-
-    public Employee updateProduct(Long id, Employee emp) {
-
-        Employee existingEmp = repository.findById(id);
-
-        if (existingEmp == null) {
-            throw new RuntimeException("Product not found with id: " + id);
-        }
-
-        existingEmp.setName(emp.getName());
-        existingEmp.setEmail(emp.getEmail());
-
-        return repository.save(existingEmp);
-    }
-
-    public void deleteProduct(Long id) {
-
-        Employee existingEmp = repository.findById(id);
-
-        if (existingEmp == null) {
-            throw new RuntimeException("Employee not found with id: " + id);
-        }
-
-        repository.deleteById(id);
-    }
-
+    void deleteEmpRecord(Long id);
 }

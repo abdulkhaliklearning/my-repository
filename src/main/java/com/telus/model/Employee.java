@@ -1,18 +1,32 @@
 package com.telus.model;
 
+import javax.validation.constraints.NotBlank;
+
 public class Employee {
 
     private Long id;
-    private String name;
+
+    @NotBlank(message = "emp name is required")
+    private String emp_name;
+
+    @NotBlank(message = "email is required")
     private String email;
+
+    @NotBlank(message = "project is required")
+    private String project;
+
+    @NotBlank(message = "designation is required")
+    private String designation;
 
     Employee() {
     }
 
-    public Employee(Long id, String name, String email) {
+    public Employee(Long id, String emp_name, String email, String project, String designation) {
         this.id = id;
-        this.name = name;
+        this.emp_name = emp_name;
         this.email = email;
+        this.project = project;
+        this.designation = designation;
     }
 
     public Long getId() {
@@ -23,12 +37,28 @@ public class Employee {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getEmp_name() {
+        return emp_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmp_name(String emp_name) {
+        this.emp_name = emp_name;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     public String getEmail() {
