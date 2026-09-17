@@ -1,0 +1,15 @@
+name : Build and Deploy my-microservice
+
+on:
+  push:
+      branches: main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: My service
+      run: |
+        echo "my service is on Github action"
