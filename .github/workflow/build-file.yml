@@ -1,4 +1,4 @@
-name : name: Build and Deploy my-microservice
+name : Build and Deploy my-microservice
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
         runs-on:ubuntu-latest
     steps:
       - name : checkout-code
-        uses: action/checkout@3
+        uses: actions/checkout@4
 
       - name : my service 
         run : echo "my service is on Github action"
