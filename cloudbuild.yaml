@@ -1,38 +1,12 @@
 steps:
-
-  # Compile the Java code and create the JAR file in the cloud
+  # Step 1: Compile the Java code in the cloud (NO LOCAL JAR NEEDED)
   - name: 'maven:3.8.5-openjdk-17'
     entrypoint: 'mvn'
     args: ['clean', 'package', '-DskipTests']
 
-  # Build the Docker image
+  # Step 2: Build the Docker image using the JAR created in Step 1
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-microservice:latest'
-      - '.'
-
-  # Push the image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-microservice:latest'
-
-  # Deploy the image to Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
-    args:
-      - 'run'
-      - 'deploy'
-      - 'my-microservice'
-      - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/my-microservice:latest'
-      - '--region'
-      - 'us-central1'
-      - '--platform'
-      - 'managed'
-      - '--allow-unauthenticated'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/my-repo/my-microservice:latest', '.']
 
 images:
   - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/my-repo/my-microservice:latest'
