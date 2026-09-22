@@ -1,4 +1,10 @@
 steps:
+
+  # Compile the Java code and create the JAR file in the cloud
+  - name: 'maven:3.8.5-openjdk-17'
+    entrypoint: 'mvn'
+    args: ['clean', 'package', '-DskipTests']
+
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
