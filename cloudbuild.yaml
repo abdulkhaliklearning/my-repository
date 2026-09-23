@@ -1,32 +1,39 @@
 steps:
-  # Step 1: Compile the Java code in the cloud (NO LOCAL JAR NEEDED)
-  - name: 'maven:3.8.5-openjdk-17'
-    entrypoint: 'mvn'
-    args: ['clean', 'package', '-DskipTests']
+  # Step 1: Build Spring Boot application
+  - name: 'gcr.io/cloud-builders/mvn'
+    args:
+      - 'clean'
+      - 'package'
+      - '-DskipTests'
 
-  # Step 2: Build the Docker image using the JAR created in Step 1
+  # Step 2: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo/my-microservice:latest', '.']
-    
-    
-    # 3. Push Docker image to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo//my-microservice:latest', '.']
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo/my-microservice:latest'
+      - '.'
 
-  # 4. Deploy to Cloud Run
+  # Step 3: Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo/my-microservice:latest'
+
+  # Step 4: Deploy Docker image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'gcloud'
+    entrypoint: gcloud
     args:
       - 'run'
       - 'deploy'
-      - 'customer-service'
+      - 'my-microservice'
       - '--image'
-      - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo//my-microservice:latest'
+      - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo/my-microservice:latest'
       - '--region'
       - 'us-central1'
       - '--platform'
       - 'managed'
-      - '--allow-unauthenticated'  
+      - '--allow-unauthenticated'
 
 images:
   - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo/my-microservice:latest'
