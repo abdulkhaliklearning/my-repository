@@ -22,6 +22,12 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+    // TEST
+    @GetMapping("/test")
+    public String test() {
+        return "This is the test for Cloud Run!";
+    }
+
     // CREATE
     @PostMapping
     public ResponseEntity<Employee> createEmployee(
