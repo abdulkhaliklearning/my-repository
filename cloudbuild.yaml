@@ -11,9 +11,7 @@ steps:
     
     # 3. Push Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo//my-microservice:latest', '.'
+    args: ['push', 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo//my-microservice:latest', '.']
 
   # 4. Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
@@ -23,7 +21,7 @@ steps:
       - 'deploy'
       - 'customer-service'
       - '--image'
-      - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo//my-microservice:latest', '.'
+      - 'us-central1-docker.pkg.dev/keen-tokenizer-509013-c5/springboot-repo//my-microservice:latest'
       - '--region'
       - 'us-central1'
       - '--platform'
