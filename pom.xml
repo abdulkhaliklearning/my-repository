@@ -45,11 +45,18 @@
         <artifactId>spring-boot-starter-jdbc</artifactId>
     </dependency>
 
-    <!-- MySQL Driver -->
+    <!-- PostgreSQL Driver -->
     <dependency>
-        <groupId>com.mysql</groupId>
-        <artifactId>mysql-connector-j</artifactId>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
         <scope>runtime</scope>
+    </dependency>
+
+	<!-- Cloud SQL Connector -->
+	<dependency>
+        <groupId>com.google.cloud.sql</groupId>
+        <artifactId>postgres-socket-factory</artifactId>
+        <version>1.27.0</version>
     </dependency>
 
     <!-- Validation -->
