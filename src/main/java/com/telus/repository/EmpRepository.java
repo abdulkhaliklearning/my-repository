@@ -19,7 +19,7 @@ public class EmpRepository {
 
     public Employee InsertEmpRecord(Employee employee) {
 
-        String sql = "INSERT INTO employee (name, Email, Project, Designation) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO employees (name, Email, Project, Designation) VALUES (?, ?, ?, ?)";
 
         jdbcTemplate.update(
                 sql,
@@ -40,7 +40,7 @@ public class EmpRepository {
     // READ ALL
     public List<Employee> getAllEmpRecords() {
 
-        String sql = "SELECT id, name, email, project, designation FROM employee ORDER BY id";
+        String sql = "SELECT id, name, email, project, designation FROM employees ORDER BY id";
 
         return jdbcTemplate.query(
                 sql,
@@ -55,7 +55,7 @@ public class EmpRepository {
     // READ BY ID
     public Optional<Employee> getEmpById(Long id) {
 
-        String sql = "SELECT id, name, email, project, designation FROM employee  WHERE id = ?";
+        String sql = "SELECT id, name, email, project, designation FROM employees  WHERE id = ?";
 
         List<Employee> employees = jdbcTemplate.query(
                 sql,
@@ -72,7 +72,7 @@ public class EmpRepository {
 
     public int updateEmpRecord(Long id, Employee employee) {
 
-        String sql = "UPDATE employee SET name = ?, email = ?, project = ?,  designation = ?  WHERE id = ? ";
+        String sql = "UPDATE employees SET name = ?, email = ?, project = ?,  designation = ?  WHERE id = ? ";
 
         return jdbcTemplate.update(
                 sql,
@@ -86,7 +86,7 @@ public class EmpRepository {
     // DELETE
     public int deleteEmpRecord(Long id) {
 
-        String sql = "DELETE FROM employee WHERE id = ?";
+        String sql = "DELETE FROM employees WHERE id = ?";
 
         return jdbcTemplate.update(sql, id);
     }
