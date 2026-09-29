@@ -6,7 +6,6 @@ public class Employee {
 
     private Long id;
 
-    @NotBlank(message = "emp name is required")
     private String emp_name;
 
     @NotBlank(message = "email is required")
@@ -68,5 +67,4 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }
